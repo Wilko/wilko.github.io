@@ -3,13 +3,11 @@
 	<script src="https://unpkg.com/alpinejs"></script>
 	<script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
 	<script src="https://unpkg.com/underscore@1.13.6/underscore-umd-min.js"></script>
-		<title>Did Max Verstappen win?</title>
-		<meta name="description" content="Our first page">
-			<meta name="keywords" content="html tutorial template">
+	<script src="https://cdn.tailwindcss.com"></script>
+	<title>Did Max Verstappen win?</title>
 	</head>
-			<body>
-				<!-- <script>alert("This is a test nerds")</script> -->
-				<!-- <button x-on:click="alert('Hello')">Click me</button> -->
-				<div><h1 x-text="_.last((await axios.get('https://api.openf1.org/v1/position?meeting_key=latest&driver_number=1&session_key=latest')).data).position==1?'Yes':'No'"></h1></div>
+			<body class="h-full w-full bg-gray-600 flex flex-col justify-center items-center">
+				<div><h2 class="text-3xl text-white mb-10">Did Max Verstappen win the last grand prix?</h2></div>
+				<div><h1 class="text-9xl text-white" x-text="_.last((await axios.get('https://api.openf1.org/v1/position?meeting_key=latest&driver_number=1&session_key=latest')).data).position==1?'Yes':'No'"></h1></div>
 			</body>
 </html>
