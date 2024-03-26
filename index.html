@@ -1,11 +1,15 @@
-<!doctype html>
 <html>
 	<head>
-		<title>Test for did max win</title>
+	<script src="https://unpkg.com/alpinejs"></script>
+	<script src="https://unpkg.com/axios@1.6.7/dist/axios.min.js"></script>
+	<script src="https://unpkg.com/underscore@1.13.6/underscore-umd-min.js"></script>
+		<title>Did Max Verstappen win?</title>
 		<meta name="description" content="Our first page">
 			<meta name="keywords" content="html tutorial template">
-</head>
+	</head>
 			<body>
-Content goes here.
-</body>
-		</html>
+				<!-- <script>alert("This is a test nerds")</script> -->
+				<!-- <button x-on:click="alert('Hello')">Click me</button> -->
+				<div><h1 x-text="_.last((await axios.get('https://api.openf1.org/v1/position?meeting_key=latest&driver_number=1&session_key=latest')).data).position==1?'Yes':'No'"></h1></div>
+			</body>
+</html>
