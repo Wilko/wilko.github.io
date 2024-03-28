@@ -14,8 +14,8 @@
 		<div x-data="{lastrace:''}" x-init="lastrace=await (_.last((await axios.get('https://api.openf1.org/v1/meetings?meeting_key=latest')).data).meeting_name)"><h2 class="text-3xl text-white"  x-text="'Did Max Verstappen win the ' + lastrace + '?'"></h2></div>
 		<div><h1 class="text-9xl text-white mb-40" x-text="won?'Yes':'No'"></h1></div>
 		<div><h1 class="text-5xl text-white mb-5 text-decoration-line: underline font-bold">2024 Race Results</h1></div>
-		<div class="text-3xl text-white" x-data="{races:[]}" x-init="races=(await axios.get('https://api.openf1.org/v1/meetings?year=2024')).data">
-			<template x-for="race in races"><p x-text="moment(race.date_start).format('DD/MM/YYYY') + ' - ' + race.meeting_name + ' - ' + (_.last((await axios.get('https://api.openf1.org/v1/position?driver_number=1&meeting_key='+race.meeting_key)).data).position==1?'Yes':'No')"></p></template>
+		<div class="text-3xl text-white" x-data="{races:[]}" x-init="races=((await axios.get('https://api.openf1.org/v1/meetings?year=2024')).data).reverse()">
+			<template x-for="race in races"><p x-text="moment((_.last((await axios.get('https://api.openf1.org/v1/sessions?meeting_key='+race.meeting_key)).data).date_start)).format('dddd, MMMM Do YYYY') + ' - ' + race.meeting_name + ' - ' + (_.last((await axios.get('https://api.openf1.org/v1/position?driver_number=1&meeting_key='+race.meeting_key)).data).position==1?'Yes':'No')"></p></template>
 		</div>
 		</div>
 	</body>
