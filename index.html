@@ -8,15 +8,24 @@
 		<title>Did Max Verstappen win?</title>
 	</head>
 	<body class="h-full w-full bg-gray-600">
-		<div class="flex flex-col justify-center items-center" x-data="{won:null}" x-init="won=_.last((await axios.get('https://api.openf1.org/v1/position?meeting_key=latest&driver_number=1&session_key=latest')).data).position==1">
-		<img x-show="won" class="my-10" src="happymax.jpg" alt="Happy Max Verstappen">
-		<img x-show="!won" class="my-10" src="sadmax.jpg" alt="Sad Max Verstappen">
-		<div x-data="{lastrace:''}" x-init="lastrace=await (_.last((await axios.get('https://api.openf1.org/v1/meetings?meeting_key=latest')).data).meeting_name)"><h2 class="text-3xl text-white"  x-text="'Did Max Verstappen win the ' + lastrace + '?'"></h2></div>
-		<div><h1 class="text-9xl text-white mb-40" x-text="won?'Yes':'No'"></h1></div>
-		<div><h1 class="text-5xl text-white mb-5 text-decoration-line: underline font-bold">2024 Race Results</h1></div>
-		<div class="text-3xl text-white" x-data="{races:[]}" x-init="races=((await axios.get('https://api.openf1.org/v1/meetings?year=2024')).data).reverse()">
-			<template x-for="race in races"><p x-text="moment((_.last((await axios.get('https://api.openf1.org/v1/sessions?meeting_key='+race.meeting_key)).data).date_start)).format('dddd, MMMM Do YYYY') + ' - ' + race.meeting_name + ' - ' + (_.last((await axios.get('https://api.openf1.org/v1/position?driver_number=1&meeting_key='+race.meeting_key)).data).position==1?'Yes':'No')"></p></template>
-		</div>
+		<div class="flex flex-col justify-center items-center" x-data="{won:null}" x-init="won=_.last((await axios.get('https://api.openf1.org/v1/position?driver_number=1&session_key='+_.last((await axios.get('https://api.openf1.org/v1/race_control?flag=CHEQUERED&lap_number%3E0')).data).session_key)).data).position==1">
+			<img x-show="won" class="my-10" src="happymax.jpg" alt="Happy Max Verstappen">
+			<img x-show="!won" class="my-10" src="sadmax.jpg" alt="Sad Max Verstappen">
+			<div x-data="{lastrace:null}" x-init="lastrace=_.last((await axios.get('https://api.openf1.org/v1/meetings?meeting_key='+_.last((await axios.get('https://api.openf1.org/v1/race_control?flag=CHEQUERED&lap_number%3E0')).data).meeting_key)).data).meeting_name">
+				<h1 class="text-3xl text-white drop-shadow-[0_4px_4px_rgba(0,0,0,1)]"  x-text="'Did Max Verstappen win the ' + lastrace + ' (' + _.last((await axios.get('https://api.openf1.org/v1/sessions?session_key='+_.last((await axios.get('https://api.openf1.org/v1/race_control?flag=CHEQUERED&lap_number%3E0')).data).session_key)).data).session_name + ')?'"></h2>
+			</div>
+			<h2 class="text-9xl text-white mb-40 drop-shadow-[0_4px_4px_rgba(0,0,0,1)]" x-text="won?'Yes':'No'"></h2>
+			<h3 class="text-5xl text-white mb-5 text-decoration-line: underline font-bold drop-shadow-[0_4px_4px_rgba(0,0,0,1)]">Previous Race Results</h3>
+			<div class="text-3xl text-white drop-shadow-[0_4px_4px_rgba(0,0,0,1)]" x-data="{races:[]}" x-init="races=((await axios.get('https://api.openf1.org/v1/race_control?flag=CHEQUERED&lap_number%3E0')).data).reverse()">
+				<template x-for="race in races">
+					<p x-text="moment((_.last((await axios.get('https://api.openf1.org/v1/sessions?session_key='+race.session_key)).data).date_start)).format('dddd, MMMM Do YYYY') + ' - ' + (_.last((await axios.get('https://api.openf1.org/v1/meetings?meeting_key='+race.meeting_key)).data).meeting_name) + ' (' + _.last((await axios.get('https://api.openf1.org/v1/sessions?session_key='+race.session_key)).data).session_name + ') - ' + (_.last((await axios.get('https://api.openf1.org/v1/position?driver_number=1&session_key='+race.session_key)).data).position==1?'Yes':'No')"></p>
+				</template>
+			</div>
+			<!-- <div class="text-3xl text-white drop-shadow-[0_4px_4px_rgba(0,0,0,1)]" x-data="{races:[]}" x-init="races=((await axios.get('https://api.openf1.org/v1/meetings?year=2024')).data).reverse()">
+				<template x-for="race in races">
+					<p x-text="moment((_.last((await axios.get('https://api.openf1.org/v1/sessions?meeting_key='+race.meeting_key)).data).date_start)).format('dddd, MMMM Do YYYY') + ' - ' + race.meeting_name + ' - ' + (_.last((await axios.get('https://api.openf1.org/v1/position?driver_number=1&meeting_key='+race.meeting_key)).data).position==1?'Yes':'No')"></p>
+				</template>
+			</div> -->
 		</div>
 	</body>
 </html>
